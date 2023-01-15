@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        body{
+            background-color: rgb(179, 249, 245);
+            flex-direction: column;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>simpleApp</h1>
+    <form>
+        <label>Email</label>
+        <input type="email">
+        <label>Name</label>
+        <input type="text">
+        <label>Password</label>
+        <input type="password">
+        <button>SignUp</button>
+    </form>
+    <span>PageViews:</span>
+    <h4 id="page-count">1</h4>
+    <span>Visits:</span>
+    <h4 id="visit-count">0</h4>
+    <!--axios fetch-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let btn=document.querySelector('button');
+        btn.addEventListener('click',async function(e){
+            e.preventDefault();
+            let email=document.querySelector("input[type='email']").value;
+            let name=document.querySelector("input[type='text']").value;
+            let password=document.querySelector("input[type='password']").value;
+            let resp=await axios.post('/auth/signup',{email,name,password});
+            console.log('resp',resp);
+        })
+
+        const pageCount=document.getElementById("page-count");
+        const visitCount=document.getElementById("visit-count");
+        if(sessionStorage.getItem('visit')===null){
+            updateCounter('type=visit-page');
+        }else{
+            updateCounter('type=page');
+        }
+        function updateCounter(type){
+            fetch('http://127.0.0.1:3000/api?'+type)
+              .then(res=>res.json())
+              .then(data=>{
+                pageCount.textContent=data.pageviews;
+                visitCount.textContent=data.visits;
+              });
+        }
+        sessionStorage.setItem('visit','x');
+        // countvisits();
+        // function countvisits(){
+        //     fetch('https://api.countapi.xyz/update/simpleApp/app/?amount=1')
+        //       .then((res)=>res.json())
+        //       .then((res)=>{
+        //         counter.innerHTML=res.value;
+        //       });
+        // }
+    </script>
+</body>
+</html>

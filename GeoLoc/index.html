@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        body{
+            background-color: rgb(168, 197, 139);
+            flex-direction: column;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML GeoLocation</h1>
+    <button id="share">Share Location</button>
+    <script>
+        var getLoc=document.getElementById("share");
+        getLoc.addEventListener("click",event=>{
+            if('geolocation' in navigator){
+                navigator.geolocation.getCurrentPosition(pos=>{
+                    let latitude=pos.coords.latitude;
+                    let longitude=pos.coords.longitude;
+                    console.log("Latitude:",latitude);
+                    console.log("Longitude:",longitude);
+                    console.log(latitude,longitude);
+                },error=>{
+                    console.log("Denied by the User",error.code);
+                })
+            }else{
+                console.log("GeoLocation is not supported by the browser");
+            }
+        });
+    </script>
+</body>
+</html>
